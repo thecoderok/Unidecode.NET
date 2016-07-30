@@ -2,6 +2,9 @@
 Moving https://bitbucket.org/DimaStefantsov/unidecodesharpfork project to GitHub (Dima no longer works with .NET).
 Also the goal is to port it to .net core
 
+# Purpose
+It often happens that you have text data in Unicode, but you need to represent it in ASCII. For example when integrating with legacy code that doesn’t support Unicode, or for ease of entry of non-Roman names on a US keyboard, or when constructing ASCII machine identifiers from human-readable Unicode strings that should still be somewhat intelligible (a popular example of this is when making an URL slug from an article title).
+
 # Overview
 
 **Unidecode.NET** is .NET library dll, written in C#.
