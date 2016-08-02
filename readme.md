@@ -11,6 +11,12 @@ It often happens that you have text data in Unicode, but you need to represent i
 It provides string or char extension method Unidecode() that returns transliterated string. It supports huge amount of languages.
 And it's very easy to add your language if it's not supported already!
 
+# Installation
+Unicode.NET published as NuGet package: https://www.nuget.org/packages/Unidecode.NET/
+To install Unidecode.NET, run the following command in the [Package Manager Console](https://docs.nuget.org/consume/package-manager-console)
+
+```bash Install-Package Unidecode.NET```
+
 #Example code
 
 Take a look at the list of assertions:
