@@ -15,7 +15,7 @@ And it's very easy to add your language if it's not supported already!
 Unicode.NET published as NuGet package: https://www.nuget.org/packages/Unidecode.NET/
 To install Unidecode.NET, run the following command in the [Package Manager Console](https://docs.nuget.org/consume/package-manager-console)
 
-```bash Install-Package Unidecode.NET```
+`Install-Package Unidecode.NET`
 
 #Example code
 
