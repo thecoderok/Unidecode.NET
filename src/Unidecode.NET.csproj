@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net45;netstandard1.3</TargetFrameworks>
+    <PackageId>Unidecode.NET</PackageId>
+    <VersionPrefix>1.1.0</VersionPrefix>
+    <AssemblyName>Unidecode.NET</AssemblyName>
+    <PackageId>Unidecode.NET</PackageId>
+    <PackageTags>text;unicode;seo</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/thecoderok/Unidecode.NET</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+  </PropertyGroup>
+</Project>
