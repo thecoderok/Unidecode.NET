@@ -1,12 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard1.3</TargetFrameworks>
-    <PackageId>Unidecode.NET</PackageId>
-    <VersionPrefix>1.1.0</VersionPrefix>
+    <AssemblyTitle>Unidecode.NET</AssemblyTitle>
     <AssemblyName>Unidecode.NET</AssemblyName>
     <PackageId>Unidecode.NET</PackageId>
+    <Authors>Dima Stefantsov, Vitalii Ganzha, Sergey Kuznetsov</Authors>
+    <Copyright>2017 © Dima Stefantsov, Vitalii Ganzha, Sergey Kuznetsov</Copyright>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Description>It provides string or char extension method Unidecode() that returns transliterated string. It supports huge amount of languages. And it's very easy to add your language if it's not supported already!</Description>
+    <TargetFrameworks>net45;netstandard1.3</TargetFrameworks>
+    <VersionPrefix>1.1.0</VersionPrefix>
     <PackageTags>text;unicode;seo</PackageTags>
     <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/thecoderok/Unidecode.NET</PackageProjectUrl>
     <RepositoryUrl>https://github.com/thecoderok/Unidecode.NET</RepositoryUrl>
   </PropertyGroup>
 
