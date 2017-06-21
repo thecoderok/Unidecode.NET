@@ -8,12 +8,13 @@
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Description>It provides string or char extension method Unidecode() that returns transliterated string. It supports huge amount of languages. And it's very easy to add your language if it's not supported already!</Description>
-    <TargetFrameworks>net45;netstandard1.3</TargetFrameworks>
-    <VersionPrefix>1.1.0</VersionPrefix>
+    <TargetFrameworks>netstandard1.2;net45</TargetFrameworks>
+    <VersionPrefix>1.1.1</VersionPrefix>
     <PackageTags>text;unicode;seo</PackageTags>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/thecoderok/Unidecode.NET</PackageProjectUrl>
     <RepositoryUrl>https://github.com/thecoderok/Unidecode.NET</RepositoryUrl>
+    <PackageReleaseNotes>1.1.1: Bring down the .Net Standard target to 1.2 from 1.3</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
