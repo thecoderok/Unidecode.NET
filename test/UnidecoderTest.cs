@@ -67,6 +67,27 @@ namespace Unidecode.NET.Tests
             Assert.Equal(expected, result);
         }
 
+        /// <summary>
+        /// According to https://en.wikipedia.org/wiki/German_orthography.
+        /// https://en.wikipedia.org/wiki/German_orthography
+        /// With converting "Ä, Ö, Ü, ẞ, ä, ö, ü, ß" to "Ae, Oe, Ue, Ss, ae, oe, ue, ss".
+        /// </summary>
+        [Fact]
+        public void GermanAlphabetTest()
+        {
+            string input = "a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z ä ö ü ß Ä Ö Ü ẞ";
+            string expected = "a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z ae oe ue ss Ae Oe Ue Ss";
+
+            var sb = new StringBuilder(expected.Length);
+            foreach (char c in input)
+            {
+                sb.Append(c.Unidecode());
+            }
+            string result = sb.ToString();
+
+            Assert.Equal(expected, result);
+        }
+
         [Fact]
         public void UnidecodeOnNullShouldReturnEmptyString()
         {
