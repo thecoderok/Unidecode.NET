@@ -1,4 +1,10 @@
-﻿
+﻿# Unicode.NET
+
+[![Build status](https://ci.appveyor.com/api/projects/status/lqjnq9ve1vbv393u?svg=true)](https://ci.appveyor.com/project/phnx47/unidecode-net)
+[![NuGet](https://img.shields.io/nuget/v/Unidecode.NET.svg)](https://www.nuget.org/packages/Unidecode.NET)
+[![NuGet](https://img.shields.io/nuget/dt/Unidecode.NET.svg)](https://www.nuget.org/packages/Unidecode.NET)
+[![License MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT) 
+
 Moving https://bitbucket.org/DimaStefantsov/unidecodesharpfork project to GitHub (Dima no longer works with .NET).
 Also the goal is to port it to .net core
 
