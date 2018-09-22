@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using Xunit;
 
 namespace Unidecode.NET.Tests
@@ -16,7 +15,7 @@ namespace Unidecode.NET.Tests
         public void CustomTest()
         {
             Assert.Equal("Rabota s kirillitsey", "Работа с кириллицей".Unidecode());
-            Assert.Equal("aouoAOUO", "äöűőÄÖŨŐ".Unidecode());
+            Assert.Equal("aeoeuoAeOeUO", "äöűőÄÖŨŐ".Unidecode());
         }
 
         [Fact]
