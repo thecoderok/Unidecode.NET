@@ -7,7 +7,7 @@
     <Copyright>2018 © Dima Stefantsov, Vitalii Ganzha, Sergey Kuznetsov</Copyright>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Description>Unidecode.NET that returns transliterated string</Description>
+    <Description>Unidecode.NET returns transliterated string</Description>
     <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard1.2;netstandard2.0;net45</TargetFrameworks>
     <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard1.2;netstandard2.0</TargetFrameworks>
     <VersionPrefix>1.3.0</VersionPrefix>
