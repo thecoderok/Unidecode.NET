@@ -5,7 +5,7 @@
 [![NuGet](https://img.shields.io/nuget/dt/Unidecode.NET.svg)](https://www.nuget.org/packages/Unidecode.NET)
 [![License MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT) 
 
-Forked from https://bitbucket.org/DimaStefantsov/unidecodesharpfork project to GitHub (Dima no longer works with .NET).
+Forked from [unidecodesharpfork](https://bitbucket.org/DimaStefantsov/unidecodesharpfork).
 
 Support <img src="https://img.shields.io/badge/.net-4.5-green.svg"></img>, <img src="https://img.shields.io/badge/.netstandard-1.2-green.svg"></img>, <img src="https://img.shields.io/badge/.netstandard-2.0-green.svg"></img>  
 
