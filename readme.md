@@ -31,7 +31,7 @@ Take a look at the list of assertions:
 ```cs
 Assert.AreEqual("Bei Jing ", "\u5317\u4EB0".Unidecode());
 Assert.AreEqual("Rabota s kirillitsey", "Работа с кириллицей".Unidecode());
-Assert.AreEqual("aouoAOUO", "äöűőÄÖŨŐ".Unidecode());
+Assert.AreEqual("aeoeuoAeOeUO", "äöűőÄÖŨŐ".Unidecode());
 Assert.AreEqual("Hello, World!", "Hello, World!".Unidecode());
 Assert.AreEqual("'\"\r\n", "'\"\r\n".Unidecode());
 Assert.AreEqual("CZSczs", "ČŽŠčžš".Unidecode());
