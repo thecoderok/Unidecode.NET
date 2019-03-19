@@ -5,7 +5,7 @@
     <PackageId>Unidecode.NET</PackageId>
     <Authors>Dima Stefantsov, Vitalii Ganzha, Sergey Kuznetsov</Authors>
     <Copyright>2019 © Dima Stefantsov, Vitalii Ganzha, Sergey Kuznetsov</Copyright>
-    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Description>Unidecode.NET returns transliterated string</Description>
     <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard1.2;netstandard2.0;net45</TargetFrameworks>

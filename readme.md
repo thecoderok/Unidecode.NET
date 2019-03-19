@@ -1,4 +1,4 @@
-﻿# Unicode.NET
+﻿# Unidecode.NET
 
 [![Build status](https://ci.appveyor.com/api/projects/status/lqjnq9ve1vbv393u?svg=true)](https://ci.appveyor.com/project/phnx47/unidecode-net)
 [![NuGet](https://img.shields.io/nuget/v/Unidecode.NET.svg)](https://www.nuget.org/packages/Unidecode.NET)
@@ -19,7 +19,7 @@ It provides string or char extension method Unidecode() that returns translitera
 And it's very easy to add your language if it's not supported already!
 
 # Installation
-Unicode.NET published as NuGet package: https://www.nuget.org/packages/Unidecode.NET/
+Unidecode.NET published as NuGet package: https://www.nuget.org/packages/Unidecode.NET/
 
 To install Unidecode.NET, run the following command in the [Package Manager Console](https://docs.nuget.org/consume/package-manager-console)
 
