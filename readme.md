@@ -5,8 +5,6 @@
 [![NuGet](https://img.shields.io/nuget/dt/Unidecode.NET.svg)](https://www.nuget.org/packages/Unidecode.NET)
 [![License MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT) 
 
-Forked from [unidecodesharpfork](https://bitbucket.org/DimaStefantsov/unidecodesharpfork).
-
 Support <img src="https://img.shields.io/badge/.net-4.5-green.svg"></img>, <img src="https://img.shields.io/badge/.netstandard-1.2-green.svg"></img>, <img src="https://img.shields.io/badge/.netstandard-2.0-green.svg"></img>  
 
 # Purpose
@@ -41,3 +39,28 @@ Assert.AreEqual("a", "а".Unidecode());
 Assert.AreEqual("chateau", "ch\u00e2teau".Unidecode());
 Assert.AreEqual("vinedos", "vi\u00f1edos".Unidecode());
 ```
+Other implementations
+---------------------
+
+*  [Text::Unidecode for Perl](http://search.cpan.org/~sburke/Text-Unidecode/lib/Text/Unidecode.pm) (the original implementation)
+*  [Unidecode for Python](https://pypi.python.org/pypi/Unidecode)
+*  [unidecoder for Ruby](https://github.com/norman/unidecoder)
+*  [unidecode for JavaScript](https://github.com/FGRibreau/node-unidecode)
+
+
+Credits
+-------
+
+This project is a fork of the [unidecodesharpfork](https://bitbucket.org/DimaStefantsov/unidecodesharpfork) written by Dima Stefantsov.
+
+
+License
+-------
+
+This project is licensed under [MIT](https://opensource.org/licenses/MIT).
+
+Character transliteration tables used in this project are converted (and slightly modified) from the tables provided in
+the Perl library [Text::Unidecode] by Sean M. Burke and are distributed under the Perl license.
+
+
+[Text::Unidecode]: http://search.cpan.org/~sburke/Text-Unidecode/lib/Text/Unidecode.pm
