@@ -4,13 +4,12 @@
     <AssemblyName>Unidecode.NET</AssemblyName>
     <PackageId>Unidecode.NET</PackageId>
     <Authors>Dima Stefantsov, Vitalii Ganzha, Sergey Kuznetsov</Authors>
-    <Copyright>2019 © Dima Stefantsov, Vitalii Ganzha, Sergey Kuznetsov</Copyright>
+    <Copyright>2020 © Dima Stefantsov, Vitalii Ganzha, Sergey Kuznetsov</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Description>Unidecode.NET returns transliterated string</Description>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard1.2;netstandard2.0;net45</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard1.2;netstandard2.0</TargetFrameworks>
-    <VersionPrefix>1.4.0</VersionPrefix>
+    <TargetFrameworks>netstandard1.2;netstandard2.0;netstandard2.1</TargetFrameworks>
+    <VersionPrefix>1.5.0</VersionPrefix>
     <PackageTags>text;unicode;seo</PackageTags>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/thecoderok/Unidecode.NET</PackageProjectUrl>

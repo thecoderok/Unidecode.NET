@@ -5,8 +5,6 @@
 [![NuGet](https://img.shields.io/nuget/dt/Unidecode.NET.svg)](https://www.nuget.org/packages/Unidecode.NET)
 [![License MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT) 
 
-Support <img src="https://img.shields.io/badge/.net-4.5-green.svg"></img>, <img src="https://img.shields.io/badge/.netstandard-1.2-green.svg"></img>, <img src="https://img.shields.io/badge/.netstandard-2.0-green.svg"></img>  
-
 # Purpose
 It often happens that you have text data in Unicode, but you need to represent it in ASCII. For example when integrating with legacy code that doesn’t support Unicode, or for ease of entry of non-Roman names on a US keyboard, or when constructing ASCII machine identifiers from human-readable Unicode strings that should still be somewhat intelligible (a popular example of this is when making an URL slug from an article title).
 

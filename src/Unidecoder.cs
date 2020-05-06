@@ -24,19 +24,14 @@ namespace Unidecode.NET
         public static string Unidecode(this string input, int? tempStringBuilderCapacity = null)
         {
             if (string.IsNullOrEmpty(input))
-            {
                 return "";
-            }
-
+            
             if (input.All(x => x < 0x80))
-            {
                 return input;
-            }
-
-
+            
             // Unidecode result often can be at least two times longer than input string.
             var sb = new StringBuilder(tempStringBuilderCapacity ?? input.Length * 2);
-            foreach (char c in input)
+            foreach (var c in input)
             {
                 // Copypaste is bad, but sb.Append(c.Unidecode()); would be a bit slower.
                 if (c < 0x80)
@@ -45,10 +40,9 @@ namespace Unidecode.NET
                 }
                 else
                 {
-                    int high = c >> 8;
-                    int low = c & 0xff;
-                    string[] transliterations;
-                    if (characters.TryGetValue(high, out transliterations))
+                    var high = c >> 8;
+                    var low = c & 0xff;
+                    if (characters.TryGetValue(high, out var transliterations))
                     {
                         sb.Append(transliterations[low]);
                     }
@@ -75,17 +69,9 @@ namespace Unidecode.NET
             }
             else
             {
-                int high = c >> 8;
-                int low = c & 0xff;
-                string[] transliterations;
-                if (characters.TryGetValue(high, out transliterations))
-                {
-                    result = transliterations[low];
-                }
-                else
-                {
-                    result = "";
-                }
+                var high = c >> 8;
+                var low = c & 0xff;
+                result = characters.TryGetValue(high, out var transliterations) ? transliterations[low] : "";
             }
 
             return result;
