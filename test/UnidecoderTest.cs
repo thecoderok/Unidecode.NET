@@ -14,15 +14,14 @@ namespace Unidecode.NET.Tests
         [Fact]
         public void CustomTest()
         {
-            Assert.Equal("Rabota s kirillitsey", "Работа с кириллицей".Unidecode());
-            Assert.Equal("aeoeuoAeOeUO", "äöűőÄÖŨŐ".Unidecode());
+            Assert.Equal("Rabota s kirillitsei", "Работа с кириллицей".Unidecode());
+            Assert.Equal("aouoAOUO", "äöűőÄÖŨŐ".Unidecode());
         }
 
         [Fact]
         public void PythonTest()
         {
             Assert.Equal("Hello, World!", "Hello, World!".Unidecode());
-
             Assert.Equal("'\"\r\n", "'\"\r\n".Unidecode());
             Assert.Equal("CZSczs", "ČŽŠčžš".Unidecode());
             Assert.Equal("a", "ア".Unidecode());
@@ -31,20 +30,15 @@ namespace Unidecode.NET.Tests
             Assert.Equal("chateau", "ch\u00e2teau".Unidecode());
             Assert.Equal("vinedos", "vi\u00f1edos".Unidecode());
         }
-
-        /// <summary>
-        /// According to http://en.wikipedia.org/wiki/Romanization_of_Russian BGN/PCGN.
-        /// http://en.wikipedia.org/wiki/BGN/PCGN_romanization_of_Russian
-        /// With converting "ё" to "yo".
-        /// </summary>
+        
         [Fact]
         public void RussianAlphabetTest()
         {
-            string russianAlphabetLowercase = "а б в г д е ё ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я";
-            string russianAlphabetUppercase = "А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я";
+            const string russianAlphabetLowercase = "а б в г д е ё ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я";
+            const string russianAlphabetUppercase = "А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я";
 
-            string expectedLowercase = "a b v g d e yo zh z i y k l m n o p r s t u f kh ts ch sh shch \" y ' e yu ya";
-            string expectedUppercase = "A B V G D E Yo Zh Z I Y K L M N O P R S T U F Kh Ts Ch Sh Shch \" Y ' E Yu Ya";
+            const string expectedLowercase = "a b v g d e io zh z i i k l m n o p r s t u f kh ts ch sh shch ' y ' e iu ia";
+            const string expectedUppercase = "A B V G D E Io Zh Z I I K L M N O P R S T U F Kh Ts Ch Sh Shch ' Y ' E Iu Ia";
 
             Assert.Equal(expectedLowercase, russianAlphabetLowercase.Unidecode());
             Assert.Equal(expectedUppercase, russianAlphabetUppercase.Unidecode());
@@ -53,36 +47,29 @@ namespace Unidecode.NET.Tests
         [Fact]
         public void CharUnidecodeTest()
         {
-            string input = "а б в г д е ё ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я";
-            string expected = "a b v g d e yo zh z i y k l m n o p r s t u f kh ts ch sh shch \" y ' e yu ya A B V G D E Yo Zh Z I Y K L M N O P R S T U F Kh Ts Ch Sh Shch \" Y ' E Yu Ya";
+            const string input = "а б в г д е ё ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я";
+            const string expected = "a b v g d e io zh z i i k l m n o p r s t u f kh ts ch sh shch ' y ' e iu ia A B V G D E Yo Zh Z I Y K L M N O P R S T U F Kh Ts Ch Sh Shch ' Y ' E Iu Ia";
 
             var sb = new StringBuilder(expected.Length);
-            foreach (char c in input)
-            {
+            foreach (var c in input)
                 sb.Append(c.Unidecode());
-            }
-            string result = sb.ToString();
+            
+            var result = sb.ToString();
 
             Assert.Equal(expected, result);
         }
-
-        /// <summary>
-        /// According to https://en.wikipedia.org/wiki/German_orthography.
-        /// https://en.wikipedia.org/wiki/German_orthography
-        /// With converting "Ä, Ö, Ü, ẞ, ä, ö, ü, ß" to "Ae, Oe, Ue, Ss, ae, oe, ue, ss".
-        /// </summary>
+        
         [Fact]
         public void GermanAlphabetTest()
         {
-            string input = "a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z ä ö ü ß Ä Ö Ü ẞ";
-            string expected = "a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z ae oe ue ss Ae Oe Ue Ss";
+            const string input = "a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z ä ö ü ß Ä Ö Ü ẞ";
+            const string expected = "a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z a o u ss A O U Ss";
 
             var sb = new StringBuilder(expected.Length);
-            foreach (char c in input)
-            {
+            foreach (var c in input)
                 sb.Append(c.Unidecode());
-            }
-            string result = sb.ToString();
+            
+            var result = sb.ToString();
 
             Assert.Equal(expected, result);
         }
