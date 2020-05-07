@@ -1,6 +1,6 @@
 ﻿# Unidecode.NET
 
-[![Build status](https://ci.appveyor.com/api/projects/status/lqjnq9ve1vbv393u?svg=true)](https://ci.appveyor.com/project/phnx47/unidecode-net)
+[![Build status](https://img.shields.io/github/workflow/status/thecoderok/Unidecode.NET/default)](https://github.com/thecoderok/Unidecode.NET/actions?query=workflow%3Adefault)
 [![NuGet](https://img.shields.io/nuget/v/Unidecode.NET.svg)](https://www.nuget.org/packages/Unidecode.NET)
 [![NuGet](https://img.shields.io/nuget/dt/Unidecode.NET.svg)](https://www.nuget.org/packages/Unidecode.NET)
 [![License MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT) 
