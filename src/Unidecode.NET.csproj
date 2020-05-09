@@ -14,5 +14,9 @@
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/thecoderok/Unidecode.NET</PackageProjectUrl>
     <RepositoryUrl>https://github.com/thecoderok/Unidecode.NET</RepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <IncludeSource>true</IncludeSource>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
 </Project>
