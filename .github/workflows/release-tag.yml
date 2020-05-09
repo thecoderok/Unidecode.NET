@@ -19,5 +19,10 @@ jobs:
         run: dotnet build -c Release
       - name: Tests
         run: dotnet test -c Release --no-build
-      - name: Pack
+      - name: Pack artifacts
         run: dotnet pack src -c Release  --no-build -o artifacts/
+      - name: Collect artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: nupkg
+          path: artifacts/
