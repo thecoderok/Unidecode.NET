@@ -79,5 +79,27 @@ namespace Unidecode.NET.Tests
         {
             Assert.Equal("", ((string)null).Unidecode());
         }
-    }
+
+        /// <summary>
+        ///   Test that code points with the maximum low byte of 255 do not 
+        ///   cause an IndexOutOfRangeException (see commit: acd8fb4)
+        /// </summary>
+        [Fact]
+        public void MaximumLowByteTest()
+        {
+            byte low = 0xFF;
+            for (var high = (char)0; high <= byte.MaxValue; high++)
+            {
+                var codePoint = (char)((high << 8) | low);
+                try
+                {
+                    codePoint.Unidecode();
+                }
+                catch (System.IndexOutOfRangeException)
+                {
+                    Assert.True(false);
+                }
+            }
+        }
+  }
 }

@@ -55,6 +55,11 @@ for file in [file for file in os.listdir(d) if not file in [".", ".."]]:
     m = re.search('x(.{3})\.py$', file)
     if m:
         data = __import__(d + "." + file[0:-3], [], [], ['data']).data
+        missing = 256 - len(data)
+        if missing != 0:
+            fill = "[?]" if data[-1] == "[?]" else ""
+            data += (fill,)*missing
+        assert len(data) == 256
         c = 0
         num = int(m.group(1), 16) * 256
         fp.write('                {%s /*%s %s*/, new[]{\n' % (int(m.group(1), 16), num, m.group(1)))
