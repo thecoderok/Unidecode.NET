@@ -34,7 +34,7 @@ namespace Unidecode.NET
       if (input.All(x => x < 0x80))
         return input;
 
-      if (input.Length < MaxStringLengthForStackAlloc)
+     /* if (input.Length < MaxStringLengthForStackAlloc)
       {
         Span<char> stackBuffer = stackalloc char[STACKALLOC_BUFFER_SIZE];
         int buffIdx = 0;
@@ -57,7 +57,7 @@ namespace Unidecode.NET
         }
 
         return new string(stackBuffer[0..buffIdx]);
-      }
+      }*/
 
 
       // Unidecode result often can be at least two times longer than input string.
