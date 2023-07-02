@@ -12,8 +12,27 @@ public class Benchmarks
 {
 
   [Benchmark]
-  public void UnidecodeRussianTest()
+  public void UnidecodeRussian()
   {
     var converted = "Работа с кириллицей".Unidecode();
   }
+
+  [Benchmark]
+  public void UnidecodeAscii()
+  {
+    var converted = "Hello World!".Unidecode();
+  }
+
+  [Benchmark]
+  public void UnidecodeRussianChar()
+  {
+    var converted = 'и'.Unidecode();
+  }
+  
+  [Benchmark]
+  public void UnidecodeAsciiChar()
+  {
+    var converted = 'Z'.Unidecode();
+  }
+
 }
