@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using Xunit;
 
@@ -105,6 +106,35 @@ namespace Unidecode.NET.Tests
         }
       }
     }
+
+
+    [Fact]
+    public void test()
+    {
+      var translated = "Süßigkeit".Unidecode();
+      Assert.Equal("Sussigkeit", translated);
+      // I search some letters in the decoded string
+      var idx_u = translated.IndexOf("u");
+      var idx_i = translated.IndexOf("i");
+      var idx_e = translated.IndexOf("e");
+      var idx_t = translated.IndexOf("t");
+
+
+      Assert.Equal(1, idx_u);
+      Assert.Equal(4, idx_i);
+      Assert.Equal(7, idx_e);
+      Assert.Equal(9, idx_t);
+
+      // I want to know where are the corresponding locations in the source string of these occourrences
+
+      var srcIndexes = Unidecoder.FindIndexesInSourceString("Süßigkeit", new int[] { idx_u, idx_i, idx_e, idx_t }).ToArray();
+
+      Assert.Equal(1, srcIndexes[0]);
+      Assert.Equal(3, srcIndexes[1]);
+      Assert.Equal(6, srcIndexes[2]);
+      Assert.Equal(8, srcIndexes[3]);
+    }
+
 
     /// <summary>
     ///   Tests that Unidecode "stackAlloc" optimized implementation falls back to the slowest SlowUnidecode implementation for long strings,

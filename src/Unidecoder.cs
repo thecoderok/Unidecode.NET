@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -69,7 +71,7 @@ namespace Unidecode.NET
       return new string(stackBuffer[0..buffIdx]);
     }
 
-
+    // this implementation is slower but it has no limits for the lenght of the input stirng. it gets called by Unidecode() for long strings
     internal static string SlowUnidecode(this string input, int? tempStringBuilderCapacity = null)
     {
       if (string.IsNullOrEmpty(input))
@@ -127,6 +129,8 @@ namespace Unidecode.NET
       return bytes[c & 0xff];
     }
 
+    // I keep a precalculated cache of all the single character strings for ascii characters, so the Unidecode character extension method
+    // does not instantiate a new string every time it has to return a single character string for a character <0x80
     private static class AsciiCharacter
     {
       public static readonly string[] AsString;
@@ -138,6 +142,54 @@ namespace Unidecode.NET
       }
       
     }
+
+    /// <summary>
+    /// this function helps you translate a set of indexes you have found in a decoded stirng to the corresponding indexes
+    /// in the original string, <br/>
+    /// for example Süßigkeit gets decoded to Sussigkeit, so the first 'i' character has index 4 in the decoded string, and 3 in the source string.
+    /// With the avove example Unidecode.GetIndexesInSourceString("Süßigkeit", new int[] {4}) will return {3}
+    /// Warning: this implementation assumes that the input IEnumerable is sorted!
+    /// </summary>
+    public static IEnumerable<int> FindIndexesInSourceString(string sourceString, IEnumerable<int> indexesInDecodedString)
+    {
+      if (string.IsNullOrEmpty(sourceString))
+        yield break;
+      if (indexesInDecodedString == null)
+        yield break;
+
+      using var indexesEnumerator = indexesInDecodedString.GetEnumerator();
+      if (!indexesEnumerator.MoveNext())
+        yield break;
+      var currIndex = indexesEnumerator.Current;
+      if (currIndex < 0)
+        throw new ArgumentException("indexes can't be negative values", nameof(indexesInDecodedString));
+
+      int decodedIdx = 0;
+      for (int srcIdx=0; srcIdx<sourceString.Length; srcIdx++)
+      {
+        if (decodedIdx >= currIndex)
+        {
+          yield return srcIdx;
+          var prevIndex = currIndex;
+          if (!indexesEnumerator.MoveNext()) 
+            yield break; // we decoded all the indexes
+          currIndex = indexesEnumerator.Current;
+          if (currIndex < 0)
+            throw new ArgumentException("indexes can't be negative values", nameof(indexesInDecodedString));
+          if (currIndex <= prevIndex)
+            throw new ArgumentException("Input sequence of indexes must be strictly increasing", nameof(indexesInDecodedString));
+        }
+
+        var ch = sourceString[srcIdx];
+
+        var decodedCh = ch.Unidecode();
+        if (decodedCh != null)
+          decodedIdx += decodedCh.Length;
+      }
+
+    }
+
+    
 
   }
 }
