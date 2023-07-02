@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using Xunit;
 
 namespace Unidecode.NET.Tests
@@ -18,7 +18,18 @@ namespace Unidecode.NET.Tests
             Assert.Equal("aouoAOUO", "äöűőÄÖŨŐ".Unidecode());
         }
 
-        [Fact]
+    [Fact]
+    public void Performancetest()
+    {
+      for (int i = 0; i < 1000000; i++)
+      {
+        var converted = "Работа с кириллицей".Unidecode();
+      }
+      Assert.True(true);
+    }
+
+
+    [Fact]
         public void PythonTest()
         {
             Assert.Equal("Hello, World!", "Hello, World!".Unidecode());
@@ -58,8 +69,9 @@ namespace Unidecode.NET.Tests
 
             Assert.Equal(expected, result);
         }
-        
-        [Fact]
+
+
+    [Fact]
         public void GermanAlphabetTest()
         {
             const string input = "a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z ä ö ü ß Ä Ö Ü ẞ";

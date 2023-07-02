@@ -29,17 +29,19 @@ Don't edit, this code is generated.
 */
 
 using System;
-using System.Collections.Generic;
 
-namespace Unidecode.NET 
+namespace Unidecode.NET
 {
     public static partial class Unidecoder
     {
-        private static readonly Dictionary<int, string[]> characters;
+        private static readonly string[][] characters;
+        private static readonly int MaxDecodedCharLength;
+        private static readonly int MaxStringLengthForStackAlloc;
 
         static Unidecoder()
         {
-            characters = new Dictionary<int, string[]> {
+            characters = new string[][]
+            {
 ''')
 
 
@@ -50,7 +52,8 @@ def formatch(ch, cc):
     ch = ch.replace("\n", '"+Environment.NewLine+"')
     return ch if cc > 31 else "\\u" + ('%x' % cc).rjust(4, '0')
 
-
+lastFoundIndex = -1
+indent = '             '
 for file in [file for file in os.listdir(d) if not file in [".", ".."]]:
     m = re.search('x(.{3})\.py$', file)
     if m:
@@ -61,18 +64,40 @@ for file in [file for file in os.listdir(d) if not file in [".", ".."]]:
             data += (fill,)*missing
         assert len(data) == 256
         c = 0
-        num = int(m.group(1), 16) * 256
-        fp.write('                {%s /*%s %s*/, new[]{\n' % (int(m.group(1), 16), num, m.group(1)))
+        idx = int(m.group(1), 16)
+        num = idx * 256
+        fp.write(indent)
+        for missingindex in range(lastFoundIndex+1,idx):
+            fp.write('/* %3s */ null,\n' % (missingindex))
+            fp.write(indent)
+        lastFoundIndex = idx
+        fp.write('/* %3s */  /*%5s %s*/ new[] {' % (idx, num, m.group(1)))
         for ch in data:
-            fp.write('"%s" /*%s*/%s ' % (
-                formatch(ch, num + c),
-                ("%x" % (num + c)).rjust(4, '0'),
-                "," if c < 255 else ""))
-            c = c + 1
-        fp.write('}},\n\n')
+            if ch is None:
+                fp.write('"%s" /*%s*/%s ' % (
+                    '',
+                    ("%x" % (num + c)).rjust(4, '0'),
+                    "," if c < 255 else ""))
+            else:
+                fp.write('"%s" /*%s*/%s ' % (
+                    formatch(ch, num + c),
+                    ("%x" % (num + c)).rjust(4, '0'),
+                    "," if c < 255 else ""))
+                c = c + 1
+        fp.write('},\n')
 
 fp.write(
-    '''            };
+    '''         };
+                MaxDecodedCharLength = 1;
+                foreach (var block in characters)
+                {
+                    if (block == null)
+                        continue;
+                    foreach (var str in block)
+                        if (str.Length > MaxDecodedCharLength)
+                            MaxDecodedCharLength = str.Length;
+                }
+                MaxStringLengthForStackAlloc = STACKALLOC_BUFFER_SIZE / MaxDecodedCharLength - 1;
             }
         }
     }
