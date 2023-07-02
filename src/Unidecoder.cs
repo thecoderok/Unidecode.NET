@@ -3,16 +3,24 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
+// this IntenralsVisibleTo attribute is here to allow benchmarking and
+// testing of SlowUnidecode, which normally, due to the stackalloc optimization,
+// is called only when Unidecode receives a long string
+[assembly: InternalsVisibleTo("Unidecode.Net.Benchmark")]
+[assembly: InternalsVisibleTo("Unidecode.Net.Tests")]
+
 namespace Unidecode.NET
-{
+{   
   /// <summary>
   /// ASCII transliterations of Unicode text
   /// </summary>
   public static partial class Unidecoder
   {
-    // for short strings I use a buffer allocated in the stack instead of a stringbuilder (this should give less work to the garbage collector
-    private const int STACKALLOC_BUFFER_SIZE = 40956;
+    // for short strings I use a buffer allocated in the stack instead of a stringbuilder.
+    // (this is faster and gives less work to the garbage collector)
+    private const int STACKALLOC_BUFFER_SIZE = 8192;
 
+    [SkipLocalsInit] // this is to avoid the local raw buffer variable stackBuffer do be zeroed for every call: we don't need it and is very cpu intensive (this attribute needs unsafe compliation)
     /// <summary>
     /// Transliterate Unicode string to ASCII string.
     /// </summary>
@@ -31,34 +39,44 @@ namespace Unidecode.NET
       if (string.IsNullOrEmpty(input))
         return "";
 
+      if (input.Length >= MaxStringLengthForStackAlloc)
+        return SlowUnidecode(input, tempStringBuilderCapacity);
+
+      bool noConversionNeeded = true;
+      Span<char> stackBuffer = stackalloc char[STACKALLOC_BUFFER_SIZE];
+      int buffIdx = 0;
+      foreach (char c in input)
+      {
+        if (c < 0x80)
+        {
+          stackBuffer[buffIdx++] = c;
+          continue;
+        }
+        noConversionNeeded = false;
+        var high = c >> 8;
+        if (high >= characters.Length)
+          continue;
+        var bytes = characters[high];
+        if (bytes == null)
+          continue;
+        var str = bytes[c & 0xff];
+
+        foreach (char ch in str)
+          stackBuffer[buffIdx++] = ch;
+      }
+      if (noConversionNeeded)
+        return input;
+      return new string(stackBuffer[0..buffIdx]);
+    }
+
+
+    internal static string SlowUnidecode(this string input, int? tempStringBuilderCapacity = null)
+    {
+      if (string.IsNullOrEmpty(input))
+        return "";
+
       if (input.All(x => x < 0x80))
         return input;
-
-     /* if (input.Length < MaxStringLengthForStackAlloc)
-      {
-        Span<char> stackBuffer = stackalloc char[STACKALLOC_BUFFER_SIZE];
-        int buffIdx = 0;
-        foreach (char c in input)
-        {
-          if (c < 0x80)
-          {
-            stackBuffer[buffIdx++] = c;
-            continue;
-          }
-          var high = c >> 8;
-          if (high < characters.Length)
-            continue;
-          var bytes = characters[high];
-          if (bytes == null)
-            continue;
-          var str = bytes[c & 0xff];
-          foreach (char ch in str)
-             stackBuffer[buffIdx++] = ch;
-        }
-
-        return new string(stackBuffer[0..buffIdx]);
-      }*/
-
 
       // Unidecode result often can be at least two times longer than input string.
       var sb = new StringBuilder(tempStringBuilderCapacity ?? input.Length * 2);
@@ -76,7 +94,7 @@ namespace Unidecode.NET
             continue;
           var low = c & 0xff;
           var bytes = characters[high];
-          if (bytes!=null)
+          if (bytes != null)
           {
             sb.Append(bytes[low]);
           }
@@ -94,7 +112,7 @@ namespace Unidecode.NET
     ///     ASCII string. Unknown(?) unicode characters will return [?] (3 characters).
     ///     It is this way in Python code as well.
     /// </returns>
-    public static string Unidecode(this char c)
+    public static string Unidecode(this in char c)
     {
       if (c < 0x80)
         return AsciiCharacter.AsString[c];
