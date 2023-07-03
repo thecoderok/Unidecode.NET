@@ -36,7 +36,6 @@ namespace Unidecode.NET
     {
         private static readonly string[][] characters;
         private static readonly int MaxDecodedCharLength;
-        private static readonly int MaxStringLengthForStackAlloc;
 
         static Unidecoder()
         {
@@ -97,7 +96,6 @@ fp.write(
                         if (str.Length > MaxDecodedCharLength)
                             MaxDecodedCharLength = str.Length;
                 }
-                MaxStringLengthForStackAlloc = STACKALLOC_BUFFER_SIZE / MaxDecodedCharLength - 1;
             }
         }
     }

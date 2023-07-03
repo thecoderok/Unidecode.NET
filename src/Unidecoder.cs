@@ -20,7 +20,7 @@ namespace Unidecode.NET
   {
     // for short strings I use a buffer allocated in the stack instead of a stringbuilder.
     // (this is faster and gives less work to the garbage collector)
-    private const int STACKALLOC_BUFFER_SIZE = 8192;
+    private const int MAX_STACKALLOC_BUFFER_SIZE = 8192;
 
     [SkipLocalsInit] // this is to avoid the local raw buffer variable stackBuffer do be zeroed for every call: we don't need it and is very cpu intensive (this attribute needs unsafe compliation)
     /// <summary>
@@ -40,12 +40,12 @@ namespace Unidecode.NET
     {
       if (string.IsNullOrEmpty(input))
         return "";
-
-      if (input.Length >= MaxStringLengthForStackAlloc)
+      var neededBufferSize = input.Length * MaxDecodedCharLength + 1;
+      if (neededBufferSize >= MAX_STACKALLOC_BUFFER_SIZE)
         return SlowUnidecode(input, tempStringBuilderCapacity);
 
       bool noConversionNeeded = true;
-      Span<char> stackBuffer = stackalloc char[STACKALLOC_BUFFER_SIZE];
+      Span<char> stackBuffer = stackalloc char[neededBufferSize];
       int buffIdx = 0;
       foreach (char c in input)
       {
