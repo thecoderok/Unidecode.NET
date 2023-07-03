@@ -1,58 +1,27 @@
 import os, re
 
+# this python script generates the unidecoder-decodemap.txt file 
+# from the original python source. to make it run, you need 
+# to download this directory from the original repository:
+# https://github.com/avian2/unidecode/tree/master/unidecode
+# and extract it in a folder named "py-codes"
+# when run, it will generate a file named unidecoder-decodemap.txt 
+# that must be copied in the assets folder. 
+# this file will be included in the assembly and used in the static
+# constructor of Unidecoder class.
+
 d = "py-codes" # https://github.com/avian2/unidecode/tree/master/unidecode
 print("working...")
 
-fp = open("Unidecoder.Characters.cs", "w")
-fp.write('''/*
-COPYRIGHT
-
-Character transliteration tables:
-
-Copyright 2001, Sean M. Burke <sburke@cpan.org>, all rights reserved.
-
-Python code:
-
-Copyright 2009, Tomaz Solc <tomaz@zemanta.com>
-
-The programs and documentation in this dist are distributed in the
-hope that they will be useful, but without any warranty; without even
-the implied warranty of merchantability or fitness for a particular
-purpose.
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl.
-*/
-
-/*
-Don't edit, this code is generated.
-*/
-
-using System;
-
-namespace Unidecode.NET
-{
-    public static partial class Unidecoder
-    {
-        private static readonly string[][] characters;
-        private static readonly int MaxDecodedCharLength;
-
-        static Unidecoder()
-        {
-            characters = new string[][]
-            {
-''')
-
+fp = open("unidecoder-decodemap.txt", "w")
 
 def formatch(ch, cc):
     ch = ch.replace("\r", "")
     ch = ch.replace("\\", "\\\\")
     ch = ch.replace("\"", "\\\"")
-    ch = ch.replace("\n", '"+Environment.NewLine+"')
+    ch = ch.replace("\n", '"\\n"')
     return ch if cc > 31 else "\\u" + ('%x' % cc).rjust(4, '0')
 
-lastFoundIndex = -1
-indent = '             '
 for file in [file for file in os.listdir(d) if not file in [".", ".."]]:
     m = re.search('x(.{3})\.py$', file)
     if m:
@@ -65,40 +34,16 @@ for file in [file for file in os.listdir(d) if not file in [".", ".."]]:
         c = 0
         idx = int(m.group(1), 16)
         num = idx * 256
-        fp.write(indent)
-        for missingindex in range(lastFoundIndex+1,idx):
-            fp.write('/* %3s */ null,\n' % (missingindex))
-            fp.write(indent)
-        lastFoundIndex = idx
-        fp.write('/* %3s */  /*%5s %s*/ new[] {' % (idx, num, m.group(1)))
+        fp.write('%3s\t' % (idx))
         for ch in data:
             if ch is None:
-                fp.write('"%s" /*%s*/%s ' % (
-                    '',
-                    ("%x" % (num + c)).rjust(4, '0'),
-                    "," if c < 255 else ""))
+                fp.write('""');
             else:
-                fp.write('"%s" /*%s*/%s ' % (
-                    formatch(ch, num + c),
-                    ("%x" % (num + c)).rjust(4, '0'),
-                    "," if c < 255 else ""))
-                c = c + 1
-        fp.write('},\n')
+                fp.write('"%s"' % (formatch(ch, num + c)))
+            if c<255:
+                fp.write('\t')
+            c = c + 1
+        fp.write('\n')
 
-fp.write(
-    '''         };
-                MaxDecodedCharLength = 1;
-                foreach (var block in characters)
-                {
-                    if (block == null)
-                        continue;
-                    foreach (var str in block)
-                        if (str.Length > MaxDecodedCharLength)
-                            MaxDecodedCharLength = str.Length;
-                }
-            }
-        }
-    }
-    ''')
 print("converted!")
 
