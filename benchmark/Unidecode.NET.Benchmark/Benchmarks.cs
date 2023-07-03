@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using BenchmarkDotNet;
 using BenchmarkDotNet.Attributes;
 
 namespace Unidecode.NET.Benchmark;
@@ -12,15 +7,27 @@ public class Benchmarks
 {
 
   [Benchmark]
-  public void UnidecodeRussian()
+  public void FastUnidecodeRussian()
   {
-    var converted = "Работа с кириллицей".Unidecode();
+    var converted = "Работа с кириллицей".Unidecode(UnidecodeAlgorithm.Fast);
   }
 
   [Benchmark]
-  public void UnidecodeAscii()
+  public void CompleteUnidecodeRussian()
   {
-    var converted = "Hello World!".Unidecode();
+    var converted = "Работа с кириллицей".Unidecode(UnidecodeAlgorithm.Complete);
+  }
+
+  [Benchmark]
+  public void FastUnidecodeAscii()
+  {
+    var converted = "Hello World!".Unidecode(UnidecodeAlgorithm.Fast);
+  }
+  
+  [Benchmark]
+  public void CompleteUnidecodeAscii()
+  {
+    var converted = "Hello World!".Unidecode(UnidecodeAlgorithm.Complete);
   }
 
   [Benchmark]
@@ -34,5 +41,23 @@ public class Benchmarks
   {
     var converted = 'Z'.Unidecode();
   }
+
+
+  private readonly static Rune russianRune = new('и');
+  [Benchmark]
+  public void UnidecodeRussianRune()
+  {
+
+    var converted = russianRune.Unidecode();
+  }
+
+  private readonly static Rune AsciiRune = new('Z');
+
+  [Benchmark]
+  public void UnidecodeAsciiRune()
+  {
+    var converted = AsciiRune.Unidecode();
+  }
+
 
 }

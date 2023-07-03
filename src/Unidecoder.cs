@@ -7,21 +7,40 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 
-// this IntenralsVisibleTo attribute is here to allow benchmarking and
-// testing of SlowUnidecode, which normally, due to the stackalloc optimization,
-// is called only when Unidecode receives a long string
-[assembly: InternalsVisibleTo("Unidecode.Net.Benchmark")]
-[assembly: InternalsVisibleTo("Unidecode.Net.Tests")]
-
 namespace Unidecode.NET
 {
+
+
+  public enum UnidecodeAlgorithm
+  {
+    /// <summary>
+    /// optimized decoding algorithm (up to 3 times faster), but does not work properly for unicode codepoints >65535.
+    /// </summary>
+    Fast,
+    /// <summary>
+    /// proper, slower algorithm that properly handles all codepoints (for languages like Chinese, Japanese..)
+    /// </summary>
+    Complete
+  };
+
   /// <summary>
   /// ASCII transliterations of Unicode text
   /// </summary>
   public static class Unidecoder
   {
+    // for short strings the fast decoding algorithm uses a buffer allocated
+    // in the stack instead of a stringbuilder.
+    private const int MAX_STACKALLOC_BUFFER_SIZE = 16384;
     private static readonly int MaxDecodedCharLength;
     private static string[][] characters;
+
+
+
+    /// <summary>
+    /// sets the algorithm to be used for the extension methods that do not explicitly receive the algorithm to be used)
+    /// </summary>
+    static public UnidecodeAlgorithm Algorithm { get; set; } = UnidecodeAlgorithm.Fast;
+
     static Unidecoder()
     {
       MaxDecodedCharLength = 0;
@@ -60,14 +79,26 @@ namespace Unidecode.NET
         characters[pair.Key] = pair.Value;
     }
 
+    public static string Unidecode(this string input, int? tempStringBuilderCapacity = null)
+    {
+      if (Algorithm == UnidecodeAlgorithm.Complete)
+        return CompleteUnidecode(input, tempStringBuilderCapacity);
+      return FastUnidecode(input, tempStringBuilderCapacity);
+    }
 
-    // for short strings I use a buffer allocated in the stack instead of a stringbuilder.
-    // (this is faster and gives less work to the garbage collector)
-    private const int MAX_STACKALLOC_BUFFER_SIZE = 8192;
+    public static string Unidecode(this string input, UnidecodeAlgorithm Algorithm, int? tempStringBuilderCapacity = null)
+    {
+      if (Algorithm == UnidecodeAlgorithm.Complete)
+        return CompleteUnidecode(input, tempStringBuilderCapacity);
+      return FastUnidecode(input, tempStringBuilderCapacity);
+    }
 
-    [SkipLocalsInit] // this is to avoid the local raw buffer variable stackBuffer do be zeroed for every call: we don't need it and is very cpu intensive (this attribute needs unsafe compliation)
+
+    // this is to avoid the local raw buffer variable stackBuffer do be zeroed for every call: we don't need it and is very cpu intensive (this attribute needs unsafe compliation)
     /// <summary>
-    /// Transliterate Unicode string to ASCII string.
+    /// Transliterate Unicode string to ASCII. 
+    ///  This one is a fast implementation that does NOT work properly on code points >65535. Use it only if you have to deal with languages that
+    ///  do not use such unicode symbols (like European languages), and decoding performance is an actual issue in your application<br/>
     /// </summary>
     /// <param name="input">String you want to transliterate into ASCII</param>
     /// <param name="tempStringBuilderCapacity">
@@ -79,22 +110,23 @@ namespace Unidecode.NET
     ///     ASCII string. There are [?] (3 characters) in places of some unknown(?) unicode characters.
     ///     It is this way in Python code as well.
     /// </returns>
-    public static string Unidecode(this string input, int? tempStringBuilderCapacity = null)
+    [SkipLocalsInit]
+    private static string FastUnidecode(string input, int? tempStringBuilderCapacity = null)
     {
       if (string.IsNullOrEmpty(input))
         return "";
       var neededBufferSize = input.Length * MaxDecodedCharLength + 1;
       if (neededBufferSize >= MAX_STACKALLOC_BUFFER_SIZE)
-        return SlowUnidecode(input, tempStringBuilderCapacity);
+        return CompleteUnidecode(input, tempStringBuilderCapacity);
 
       bool noConversionNeeded = true;
       Span<char> stackBuffer = stackalloc char[neededBufferSize];
       int buffIdx = 0;
-      foreach (char c in input)
+      foreach (var c in input)
       {
         if (c < 0x80)
         {
-          stackBuffer[buffIdx++] = c;
+          stackBuffer[buffIdx++] =  c;
           continue;
         }
         noConversionNeeded = false;
@@ -115,7 +147,7 @@ namespace Unidecode.NET
     }
 
     // this implementation is slower but it has no limits for the lenght of the input stirng. it gets called by Unidecode() for long strings
-    internal static string SlowUnidecode(this string input, int? tempStringBuilderCapacity = null)
+    private static string CompleteUnidecode(string input, int? tempStringBuilderCapacity = null)
     {
       if (string.IsNullOrEmpty(input))
         return "";
@@ -125,12 +157,13 @@ namespace Unidecode.NET
 
       // Unidecode result often can be at least two times longer than input string.
       var sb = new StringBuilder(tempStringBuilderCapacity ?? input.Length * 2);
-      foreach (var c in input)
+      foreach (var rune in input.EnumerateRunes())
       {
+        long c = rune.Value;
         // Copypaste is bad, but sb.Append(c.Unidecode()); would be a bit slower.
         if (c < 0x80)
         {
-          sb.Append(c);
+          sb.Append((char) c);
         }
         else
         {
@@ -151,6 +184,7 @@ namespace Unidecode.NET
 
     /// <summary>
     /// Transliterate Unicode character to ASCII string.
+    /// (for unicode points that exceed the 2 byte size, use <see cref="Unidecode(in Rune)"/>)
     /// </summary>
     /// <param name="c">Character you want to transliterate into ASCII</param>
     /// <returns>
@@ -170,6 +204,22 @@ namespace Unidecode.NET
         return null;
                 
       return bytes[c & 0xff];
+    }
+
+    public static string Unidecode(this in Rune c)
+    {
+      var codepoint = c.Value;
+      if (codepoint < 0x80)
+        return AsciiCharacter.AsString[codepoint];
+
+      var high = codepoint >> 8;
+      if (high >= characters.Length)
+        return null;
+      var bytes = characters[high];
+      if (bytes == null)
+        return null;
+
+      return bytes[codepoint & 0xff];
     }
 
     // I keep a precalculated cache of all the single character strings for ascii characters, so the Unidecode character extension method
