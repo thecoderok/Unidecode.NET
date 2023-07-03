@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 
 // this IntenralsVisibleTo attribute is here to allow benchmarking and
 // testing of SlowUnidecode, which normally, due to the stackalloc optimization,
@@ -12,12 +14,53 @@ using System.Text;
 [assembly: InternalsVisibleTo("Unidecode.Net.Tests")]
 
 namespace Unidecode.NET
-{   
+{
   /// <summary>
   /// ASCII transliterations of Unicode text
   /// </summary>
-  public static partial class Unidecoder
+  public static class Unidecoder
   {
+    private static readonly int MaxDecodedCharLength;
+    private static string[][] characters;
+    static Unidecoder()
+    {
+      MaxDecodedCharLength = 0;
+      // initialize the characters array from the embedded resource
+      var assembly = Assembly.GetExecutingAssembly();
+      var resourcename = assembly.GetName().Name + ".unidecoder-decodemap.txt";
+      using var stream = assembly.GetManifestResourceStream(resourcename);
+      using var reader = new StreamReader(stream, Encoding.UTF8);
+      var lines = new Dictionary<int, string[]>();
+      var maxidx = -1;
+
+      while (!reader.EndOfStream)
+      {
+        var line = reader.ReadLine();
+        var idx = int.Parse(line.Substring(0, 3));
+        if (idx > maxidx)
+          maxidx = idx;
+        line = line.Substring(4);
+        var pieces = line.Split('\t');
+        if (pieces.Length != 256)
+          throw new InvalidDataException("Unidecode: malformed data found in embedded resource '" + resourcename + "'");
+
+        for (var i = 0; i < pieces.Length; i++)
+        {
+          var s = pieces[i];
+          s = s.Substring(1, s.Length - 2);
+          if (s.Length > MaxDecodedCharLength)
+            MaxDecodedCharLength = s.Length;
+          pieces[i] = Regex.Unescape(s);
+        }
+
+        lines.Add(idx, pieces);
+      }
+      characters = new string[maxidx+1][];
+      foreach (var pair in lines)
+        characters[pair.Key] = pair.Value;
+    }
+
+
     // for short strings I use a buffer allocated in the stack instead of a stringbuilder.
     // (this is faster and gives less work to the garbage collector)
     private const int MAX_STACKALLOC_BUFFER_SIZE = 8192;

@@ -20,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unidecode.NET.Tests", "test
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmark", "benchmark", "{6B823939-68FD-4909-90D9-A6B4BE177ADA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unidecode.NET.Benchmark", "benchmark\Unidecode.NET.Benchmark\Unidecode.NET.Benchmark.csproj", "{BBB60B62-9870-460D-8629-4825D096F9A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unidecode.NET.Benchmark", "benchmark\Unidecode.NET.Benchmark\Unidecode.NET.Benchmark.csproj", "{BBB60B62-9870-460D-8629-4825D096F9A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

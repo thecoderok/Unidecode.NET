@@ -9,8 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\src\Unidecoder.Characters.cs" Link="Unidecoder.Characters.cs" />
     <Compile Include="..\..\src\Unidecoder.cs" Link="Unidecoder.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\assets\unidecoder-decodemap.txt" Link="unidecoder-decodemap.txt" />
   </ItemGroup>
 
   <ItemGroup>
