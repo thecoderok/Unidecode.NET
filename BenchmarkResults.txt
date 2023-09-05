@@ -1,0 +1,6 @@
+|               Method |      Mean |     Error |    StdDev |   Gen0 | Allocated |
+|--------------------- |----------:|----------:|----------:|-------:|----------:|
+|     UnidecodeRussian | 42.312 ns | 0.4374 ns | 0.4092 ns | 0.0038 |      64 B |
+|       UnidecodeAscii | 15.640 ns | 0.0360 ns | 0.0319 ns |      - |         - |
+| UnidecodeRussianChar |  3.132 ns | 0.0133 ns | 0.0124 ns |      - |         - |
+|   UnidecodeAsciiChar |  2.673 ns | 0.0167 ns | 0.0156 ns |      - |         - |

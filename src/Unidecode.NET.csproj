@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyTitle>Unidecode.NET</AssemblyTitle>
     <AssemblyName>Unidecode.NET</AssemblyName>
@@ -8,7 +8,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Description>Unidecode.NET returns transliterated string</Description>
-    <TargetFrameworks>netstandard1.2;netstandard2.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>net7.0</TargetFrameworks>
     <VersionPrefix>2.1.0</VersionPrefix>
     <PackageTags>text;unicode;seo</PackageTags>
     <RepositoryType>git</RepositoryType>
@@ -18,5 +18,9 @@
     <IncludeSource>true</IncludeSource>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <NoWarn>1591</NoWarn>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\assets\unidecoder-decodemap.txt" Link="unidecoder-decodemap.txt" />
+  </ItemGroup>
 </Project>
