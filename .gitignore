@@ -8,3 +8,4 @@ py-codes
 *.ncrunchsolution
 *.ncrunchproject
 /src/nupkgs
+/nupkgs
