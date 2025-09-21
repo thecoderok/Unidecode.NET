@@ -7,3 +7,4 @@ py-codes
 .vs/
 *.ncrunchsolution
 *.ncrunchproject
+/src/nupkgs
