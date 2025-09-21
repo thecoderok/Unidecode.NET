@@ -19,8 +19,10 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <NoWarn>1591</NoWarn>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\assets\unidecoder-decodemap.txt" Link="unidecoder-decodemap.txt" />
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>
