@@ -9,7 +9,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Description>Unidecode.NET returns transliterated string</Description>
     <TargetFrameworks>net7.0</TargetFrameworks>
-    <VersionPrefix>2.1.0</VersionPrefix>
+    <VersionPrefix>2.2.0</VersionPrefix>
     <PackageTags>text;unicode;seo</PackageTags>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/thecoderok/Unidecode.NET</PackageProjectUrl>
