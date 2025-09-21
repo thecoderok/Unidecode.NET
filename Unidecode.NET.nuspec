@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Unidecode.NET</id>
+    <version>2.2.1</version>
+    <title>Unidecode.NET</title>
+    <authors>Dima Stefantsov, Vitalii Ganzha, Sergey Kuznetsov</authors>
+    <description>Unidecode.NET returns transliterated string</description>
+    <summary>A .NET library that provides ASCII transliterations of Unicode text. Converts Unicode strings to ASCII representations, useful for URL slugs, legacy system integration, and text processing where ASCII-only output is required.</summary>
+    <language>en-US</language>
+    <projectUrl>https://github.com/thecoderok/Unidecode.NET</projectUrl>
+    <repository type="git" url="https://github.com/thecoderok/Unidecode.NET" />
+    <license type="expression">MIT</license>
+    <copyright>2020 © Dima Stefantsov, Vitalii Ganzha, Sergey Kuznetsov</copyright>
+    <tags>text unicode seo transliteration ascii slug</tags>
+    <readme>README.md</readme>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+  </metadata>
+  <files>
+    <file src="src\bin\Release\net7.0\Unidecode.NET.dll" target="lib\net7.0\Unidecode.NET.dll" />
+    <file src="src\bin\Release\net7.0\Unidecode.NET.xml" target="lib\net7.0\Unidecode.NET.xml" />
+    <file src="README.md" target="" />
+  </files>
+</package>
