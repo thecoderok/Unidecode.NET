@@ -12,9 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
       - name: Build
         run: dotnet build -c Release
       - name: Tests
@@ -22,7 +24,7 @@ jobs:
       - name: Pack artifacts
         run: dotnet pack src -c Release  --no-build -o artifacts/
       - name: Collect artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: nupkg
           path: artifacts/
